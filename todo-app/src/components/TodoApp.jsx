@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function TodoApp() {
   const [task, setTask] = useState("");
+  const [filter, setFilter] = useState("all");
 
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -15,107 +16,153 @@ function TodoApp() {
   const addTask = () => {
     if (task.trim() === "") return;
 
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        text: task,
-        completed: false,
-      },
-    ]);
+    const newTask = {
+      id: Date.now(),
+      text: task,
+      completed: false,
+    };
 
+    setTasks([...tasks, newTask]);
     setTask("");
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   const toggleComplete = (id) => {
     setTasks(
-      tasks.map((t) =>
-        t.id === id
-          ? { ...t, completed: !t.completed }
-          : t
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
       )
     );
   };
 
-  const completedCount = tasks.filter(
-    (t) => t.completed
-  ).length;
+  const editTask = (id) => {
+    const updatedText = prompt("Edit Task");
+
+    if (!updatedText || updatedText.trim() === "") return;
+
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, text: updatedText }
+          : task
+      )
+    );
+  };
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "completed") return task.completed;
+    if (filter === "pending") return !task.completed;
+    return true;
+  });
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <h2>Todo List</h2>
+    <div className="todo-container">
+      <h2 className="todo-title">📝 Todo Application</h2>
 
-      <input
-        type="text"
-        placeholder="Enter task"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-      />
+      <div style={{ textAlign: "center" }}>
+        <input
+          className="todo-input"
+          type="text"
+          placeholder="Enter a task..."
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+        />
 
-      <button onClick={addTask}>
-        Add Task
-      </button>
+        <button
+          className="add-btn"
+          onClick={addTask}
+        >
+          Add Task
+        </button>
+      </div>
 
-      <p>Total Tasks: {tasks.length}</p>
+      <div className="filter-section">
+        <button
+          className="filter-btn"
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
 
-      <p>
-        Completed Tasks: {completedCount}
-      </p>
+        <button
+          className="filter-btn"
+          onClick={() =>
+            setFilter("completed")
+          }
+        >
+          Completed
+        </button>
 
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-        }}
-      >
-        {tasks.map((t) => (
-          <li
-            key={t.id}
-            style={{
-              margin: "10px",
-            }}
-          >
-            <span
-              style={{
-                textDecoration: t.completed
-                  ? "line-through"
-                  : "none",
-                color: t.completed
-                  ? "green"
-                  : "black",
-                marginRight: "10px",
-              }}
+        <button
+          className="filter-btn"
+          onClick={() =>
+            setFilter("pending")
+          }
+        >
+          Pending
+        </button>
+      </div>
+
+      {filteredTasks.length === 0 ? (
+        <p className="empty-msg">
+          No Tasks Available 🚀
+        </p>
+      ) : (
+        <ul className="todo-list">
+          {filteredTasks.map((task) => (
+            <li
+              key={task.id}
+              className="todo-item"
             >
-              {t.text}
-            </span>
+              <span
+                className={
+                  task.completed
+                    ? "completed"
+                    : ""
+                }
+              >
+                {task.text}
+              </span>
 
-            <button
-              onClick={() =>
-                toggleComplete(t.id)
-              }
-            >
-              {t.completed
-                ? "Undo"
-                : "Complete"}
-            </button>
+              <div className="btn-group">
+                <button
+                  className="complete-btn"
+                  onClick={() =>
+                    toggleComplete(task.id)
+                  }
+                >
+                  {task.completed
+                    ? "Undo"
+                    : "Complete"}
+                </button>
 
-            <button
-              onClick={() =>
-                deleteTask(t.id)
-              }
-              style={{
-                marginLeft: "5px",
-              }}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+                <button
+                  className="edit-btn"
+                  onClick={() =>
+                    editTask(task.id)
+                  }
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="delete-btn"
+                  onClick={() =>
+                    deleteTask(task.id)
+                  }
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -1,33 +1,131 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-header {
-  text-align: center;
-  padding: 20px;
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px 15px;
 }
 
-header h1 {
-  margin-bottom: 5px;
-}
-
-header p {
-  color: gray;
-}
-
-.task-card {
+.todo-container {
+  width: 100%;
+  max-width: 700px;
   background: white;
-  padding: 15px;
-  margin: 10px auto;
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-footer {
+.todo-title {
   text-align: center;
-  margin-top: 30px;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+}
+
+.todo-input {
+  width: 75%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  font-size: 16px;
+}
+
+.todo-input:focus {
+  border-color: #667eea;
+}
+
+.add-btn {
+  padding: 12px 18px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-left: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.add-btn:hover {
+  background: #4f63d2;
+}
+
+.filter-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.filter-btn {
+  background: #f1f1f1;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.filter-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.todo-list {
+  list-style: none;
+  margin-top: 25px;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9ff;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+
+.todo-item:hover {
+  transform: translateY(-2px);
+}
+
+.completed {
+  text-decoration: line-through;
+  color: green;
+  font-weight: bold;
+}
+
+.btn-group button {
+  border: none;
+  padding: 8px 12px;
+  margin-left: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.complete-btn {
+  background: #28a745;
+}
+
+.edit-btn {
+  background: #f39c12;
+}
+
+.delete-btn {
+  background: #e74c3c;
+}
+
+.empty-msg {
+  text-align: center;
+  margin-top: 20px;
   color: gray;
 }
